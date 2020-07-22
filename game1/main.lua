@@ -1,3 +1,5 @@
+message = "Hello World!"
 function love.draw()
-  love.graphics.print("Hello World", 400, 300)
+  love.graphics.setFont(love.graphics.newFont(50))
+  love.graphics.print(message, 200, 300)
 end
