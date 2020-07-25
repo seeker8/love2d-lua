@@ -1,3 +1,4 @@
+love.window.setTitle("Clicker")
 
 function love.load()
   button = {}
