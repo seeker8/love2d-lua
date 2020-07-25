@@ -32,6 +32,8 @@ function love.mousepressed(x, y, buttonClicked, istouch)
     d = distance(button.x, button.y, x, y)
     if d <= button.size then
       score = score + 1
+      button.x = math.random(button.size, love.graphics.getWidth() - button.size)
+      button.y = math.random(button.size, love.graphics.getHeight() - button.size)
     end
   end
 end
