@@ -6,14 +6,20 @@ function love.load()
   button.size = 50 
 
   score = 0
-  timer = 0 
+  timer = 10 
 
   myFont = love.graphics.newFont(40)
 end
 
 -- dt -> delta time
 function love.update(dt)
-  
+  if timer > 0 then
+    timer = timer - dt
+  end
+
+  if timer < 0 then
+    timer = 0
+  end
 end
 
 
@@ -25,6 +31,9 @@ function love.draw()
   love.graphics.setFont(myFont)
   love.graphics.setColor(1, 1, 1)
   love.graphics.print(score)
+
+  -- timer
+  love.graphics.print(math.ceil(timer), 200, 0)
 end
 
 function love.mousepressed(x, y, buttonClicked, istouch)
