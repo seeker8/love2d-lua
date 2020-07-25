@@ -1,6 +1,12 @@
 
 function love.load()
-  
+  button = {}
+  button.x = 0
+  button.y = 0
+  button.size = 50 
+
+  score = 0
+  timer = 0 
 end
 
 -- dt -> delta time
@@ -11,6 +17,5 @@ end
 
 function love.draw()
   love.graphics.setColor(0, 0, 1)
-  love.graphics.rectangle("fill", 200, 100, 200, 100)
-  love.graphics.circle("fill", 59, 50, 10)
+  love.graphics.circle("fill", button.x, button.y, button.size)
 end
