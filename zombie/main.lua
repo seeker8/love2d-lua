@@ -36,8 +36,13 @@ function love.update(dt)
 end
 
 function love.draw()
+  -- mouse
+  mousePointer = {}
+  mousePointer.x = love.mouse.getX()
+  mousePointer.y = love.mouse.getY()
+
   love.graphics.draw(sprites.background, 0, 0)
-  love.graphics.draw(sprites.player, player.x, player.y, getAngleInRadians(),nil, nil, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
+  love.graphics.draw(sprites.player, player.x, player.y, getAngleInRadians(player, mousePointer),nil, nil, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
 
   -- enemies
   for i,z in ipairs(zombies) do
@@ -45,8 +50,8 @@ function love.draw()
   end
 end
 
-function getAngleInRadians()
-  return math.atan2(player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
+function getAngleInRadians(obj, facingPoint)
+  return math.atan2(obj.y - facingPoint.y, obj.x - facingPoint.x) + math.pi
 end
 
 function spawnZombie()
