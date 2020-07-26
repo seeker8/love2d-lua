@@ -1,3 +1,4 @@
+love.window.setTitle("Zombie Killer")
 
 function love.load()
   sprites = {}
@@ -11,6 +12,9 @@ function love.load()
   player.x = 200
   player.y = 200
   player.speed = 180
+
+  -- enemies
+  zombies = {}
 end
 
 function love.update(dt)
@@ -34,8 +38,29 @@ end
 function love.draw()
   love.graphics.draw(sprites.background, 0, 0)
   love.graphics.draw(sprites.player, player.x, player.y, getAngleInRadians(),nil, nil, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
+
+  -- enemies
+  for i,z in ipairs(zombies) do
+    love.graphics.draw(sprites.zombie, z.x, z.y)
+  end
 end
 
 function getAngleInRadians()
   return math.atan2(player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
+end
+
+function spawnZombie()
+  zombie = {}
+  zombie.x = math.random(0, love.graphics.getWidth())
+  zombie.y = math.random(0, love.graphics.getHeight())
+  zombie.speed = 100
+
+  table.insert(zombies, zombie)
+end
+
+
+function love.keypressed(key, scancode, isrepeat)
+  if key == "space" then
+    spawnZombie()
+  end
 end
