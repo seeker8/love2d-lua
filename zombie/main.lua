@@ -38,6 +38,12 @@ function love.update(dt)
   for i,z in ipairs(zombies) do
     z.x = z.x + math.cos(getAngleInRadians(z, player)) * z.speed * dt
     z.y = z.y + math.sin(getAngleInRadians(z, player)) * z.speed * dt
+
+    if distance(z.x, z.y, player.x, player.y) < 30 then
+      for i, z in ipairs(zombies) do
+        zombies[i] = nil
+      end
+    end
   end
 end
 
@@ -74,4 +80,8 @@ function love.keypressed(key, scancode, isrepeat)
   if key == "space" then
     spawnZombie()
   end
+end
+
+function distance(x, y, x2, y2)
+  return math.sqrt((y2 - y)^2 + (x2 - x)^2)
 end
