@@ -33,6 +33,12 @@ function love.update(dt)
   if love.keyboard.isDown("d") and player.x <= love.graphics.getWidth() - 30 then
     player.x = player.x + player.speed * dt
   end
+
+  -- enemies movement
+  for i,z in ipairs(zombies) do
+    z.x = z.x + math.cos(getAngleInRadians(z, player)) * z.speed * dt
+    z.y = z.y + math.sin(getAngleInRadians(z, player)) * z.speed * dt
+  end
 end
 
 function love.draw()
@@ -46,7 +52,7 @@ function love.draw()
 
   -- enemies
   for i,z in ipairs(zombies) do
-    love.graphics.draw(sprites.zombie, z.x, z.y)
+    love.graphics.draw(sprites.zombie, z.x, z.y, getAngleInRadians(zombie, player), nil, nil, sprites.zombie:getWidth()/2, sprites.zombie:getHeight()/2)
   end
 end
 
