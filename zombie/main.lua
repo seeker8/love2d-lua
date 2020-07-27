@@ -23,6 +23,7 @@ function love.load()
   gameState = 1
   maxTime = 2
   timer = maxTime
+  score = 0
 
   myFont = love.graphics.newFont(40)
 end
@@ -80,6 +81,7 @@ function love.update(dt)
       if distance(z.x, z.y, b.x, b.y) < 20 then
         z.dead = true
         b.dead = true
+        score = score + 1
       end
     end
   end
@@ -121,6 +123,8 @@ function love.draw()
     love.graphics.setFont(myFont)
     love.graphics.printf("Click anywhere to begin!", 0, 50, love.graphics.getWidth(), "center")
   end
+
+  love.graphics.printf("Score: "..score, 0, love.graphics.getHeight() - 100, love.graphics.getWidth(), "center")
 
   love.graphics.draw(sprites.player, player.x, player.y, getAngleInRadians(player, mousePointer),nil, nil, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
 
@@ -196,6 +200,7 @@ function love.mousepressed(x, y, button, istouch)
     gameState = 2
     maxTime = 2
     timer = maxTime
+    score = 0
   end
 end
 
