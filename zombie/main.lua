@@ -9,8 +9,8 @@ function love.load()
 
   -- player
   player = {}
-  player.x = 200
-  player.y = 200
+  player.x = love.graphics.getWidth() / 2
+  player.y = love.graphics.getHeight() / 2
   player.speed = 180
 
   -- enemies
@@ -55,6 +55,8 @@ function love.update(dt)
       for i, z in ipairs(zombies) do
         zombies[i] = nil
         gameState = 1
+        player.x = love.graphics.getWidth() / 2
+        player.y = love.graphics.getHeight() / 2
       end
     end
   end
