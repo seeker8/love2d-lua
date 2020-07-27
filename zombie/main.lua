@@ -18,6 +18,11 @@ function love.load()
 
   -- ammo
   bullets = {}
+
+  -- game
+  gameState = 2
+  maxTime = 2
+  timer = maxTime
 end
 
 function love.update(dt)
@@ -45,6 +50,7 @@ function love.update(dt)
     if distance(z.x, z.y, player.x, player.y) < 30 then
       for i, z in ipairs(zombies) do
         zombies[i] = nil
+        gameState = 1
       end
     end
   end
@@ -84,6 +90,15 @@ function love.update(dt)
     local b = bullets[i]
     if b.dead == ture then
       table.remove(bullets, i)
+    end
+  end
+
+  if gameState == 2 then
+    timer = timer - dt
+    if timer <= 0 then
+      spawnZombie()
+      maxTime = maxTime * 0.95
+      timer = maxTime
     end
   end
 end
