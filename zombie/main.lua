@@ -15,6 +15,9 @@ function love.load()
 
   -- enemies
   zombies = {}
+
+  -- ammo
+  bullets = {}
 end
 
 function love.update(dt)
@@ -45,6 +48,44 @@ function love.update(dt)
       end
     end
   end
+
+  -- bullets
+  for i,b in ipairs(bullets) do
+    b.x = b.x + math.cos(b.direction) * b.speed * dt
+    b.y = b.y + math.sin(b.direction) * b.speed * dt
+  end
+
+  for i=#bullets, 1, -1 do
+    local b = bullets[i]
+    if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getHeight() then
+      table.remove(bullets, i)
+    end
+  end
+
+  -- bullets vs zombies
+  for i, z in ipairs(zombies) do
+    for j, b in ipairs(bullets) do
+      if distance(z.x, z.y, b.x, b.y) < 20 then
+        z.dead = true
+        b.dead = true
+      end
+    end
+  end
+
+  -- remove dead
+  for i=#zombies, 1, -1 do
+    local z = zombies[i]
+    if z.dead == true then
+      table.remove(zombies, i)
+    end
+  end
+
+  for i=#bullets, 1, -1 do
+    local b = bullets[i]
+    if b.dead == ture then
+      table.remove(bullets, i)
+    end
+  end
 end
 
 function love.draw()
@@ -60,6 +101,11 @@ function love.draw()
   for i,z in ipairs(zombies) do
     love.graphics.draw(sprites.zombie, z.x, z.y, getAngleInRadians(zombie, player), nil, nil, sprites.zombie:getWidth()/2, sprites.zombie:getHeight()/2)
   end
+
+  -- bullets
+  for i,b in ipairs(bullets) do
+    love.graphics.draw(sprites.bullet, b.x, b.y, nil, 0.5, 0.5, sprites.bullet:getWidth()/2, sprites.bullet:getHeight()/2)
+  end
 end
 
 function getAngleInRadians(obj, facingPoint)
@@ -71,14 +117,36 @@ function spawnZombie()
   zombie.x = math.random(0, love.graphics.getWidth())
   zombie.y = math.random(0, love.graphics.getHeight())
   zombie.speed = 100
+  zombie.dead = false
 
   table.insert(zombies, zombie)
+end
+
+function spawnBullet()
+  mouse = {}
+  mouse.x = love.mouse.getX()
+  mouse.y = love.mouse.getY()
+
+  bullet = {}
+  bullet.x = player.x
+  bullet.y = player.y
+  bullet.speed = 400
+  bullet.dead = false
+  bullet.direction = getAngleInRadians(bullet, mouse)
+
+  table.insert(bullets, bullet)
 end
 
 
 function love.keypressed(key, scancode, isrepeat)
   if key == "space" then
     spawnZombie()
+  end
+end
+
+function love.mousepressed(x, y, button, istouch)
+  if button == 1 then
+    spawnBullet()
   end
 end
 
