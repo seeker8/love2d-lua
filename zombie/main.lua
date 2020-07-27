@@ -20,26 +20,30 @@ function love.load()
   bullets = {}
 
   -- game
-  gameState = 2
+  gameState = 1
   maxTime = 2
   timer = maxTime
+
+  myFont = love.graphics.newFont(40)
 end
 
 function love.update(dt)
-  if love.keyboard.isDown("s") and player.y <= love.graphics.getHeight() - 45 then
-    player.y = player.y + player.speed * dt
-  end
+  if gameState == 2 then
+    if love.keyboard.isDown("s") and player.y <= love.graphics.getHeight() - 45 then
+      player.y = player.y + player.speed * dt
+    end
 
-  if love.keyboard.isDown("w") and player.y > 0 then
-    player.y = player.y - player.speed * dt
-  end
+    if love.keyboard.isDown("w") and player.y > 0 then
+      player.y = player.y - player.speed * dt
+    end
 
-  if love.keyboard.isDown("a") and player.x > 0 then
-    player.x = player.x - player.speed * dt
-  end
+    if love.keyboard.isDown("a") and player.x > 0 then
+      player.x = player.x - player.speed * dt
+    end
 
-  if love.keyboard.isDown("d") and player.x <= love.graphics.getWidth() - 30 then
-    player.x = player.x + player.speed * dt
+    if love.keyboard.isDown("d") and player.x <= love.graphics.getWidth() - 30 then
+      player.x = player.x + player.speed * dt
+    end
   end
 
   -- enemies movement
@@ -104,12 +108,18 @@ function love.update(dt)
 end
 
 function love.draw()
+  -- background
+  love.graphics.draw(sprites.background, 0, 0)
   -- mouse
   mousePointer = {}
   mousePointer.x = love.mouse.getX()
   mousePointer.y = love.mouse.getY()
+ 
+  if gameState == 1 then
+    love.graphics.setFont(myFont)
+    love.graphics.printf("Click anywhere to begin!", 0, 50, love.graphics.getWidth(), "center")
+  end
 
-  love.graphics.draw(sprites.background, 0, 0)
   love.graphics.draw(sprites.player, player.x, player.y, getAngleInRadians(player, mousePointer),nil, nil, sprites.player:getWidth()/2, sprites.player:getHeight()/2)
 
   -- enemies
@@ -176,8 +186,14 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function love.mousepressed(x, y, button, istouch)
-  if button == 1 then
+  if button == 1 and gameState == 2 then
     spawnBullet()
+  end
+
+  if gameState == 1 then
+    gameState = 2
+    maxTime = 2
+    timer = maxTime
   end
 end
 
